@@ -152,6 +152,7 @@ Additional project documentation includes:
 - Lab environment configuration
 - Sysmon configuration
 - Windows investigation queries
+- Incident timeline and IOC summary
 - Investigation evidence and screenshots
 
 ## Repository Structure
