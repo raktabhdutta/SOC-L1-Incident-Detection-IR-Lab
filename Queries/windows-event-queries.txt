@@ -1,0 +1,72 @@
+SOC L1 Incident Detection & Incident Response Lab
+Windows Event and Sysmon Investigation Queries
+================================================
+
+1. CORE WINDOWS EVENT LOG VERIFICATION
+--------------------------------------
+wevtutil el | findstr /i /x "Application Security System"
+
+
+2. WINDOWS LOGON AUDIT POLICY VERIFICATION
+------------------------------------------
+auditpol /get /subcategory:"Logon"
+
+
+3. FAILED AUTHENTICATION — EVENT ID 4625
+----------------------------------------
+wevtutil qe Security /q:"*[System[(EventID=4625)]]" /c:20 /rd:true /f:text
+
+
+4. SUCCESSFUL AUTHENTICATION — EVENT ID 4624
+--------------------------------------------
+wevtutil qe Security /q:"*[System[(EventID=4624)]]" /c:20 /rd:true /f:text
+
+
+5. POWERSHELL SCRIPT BLOCK LOGGING — EVENT ID 4104
+--------------------------------------------------
+powershell -Command "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -FilterXPath '*[System[(EventID=4104)]]' -MaxEvents 10 | Format-List TimeCreated,Id,Message"
+
+
+6. SYSMON EVENT LOG CHANNEL VERIFICATION
+----------------------------------------
+wevtutil el | findstr /i "Sysmon"
+
+
+7. SYSMON RECENT EVENTS
+-----------------------
+wevtutil qe "Microsoft-Windows-Sysmon/Operational" /c:5 /rd:true /f:text
+
+
+8. SYSMON PROCESS CREATION — EVENT ID 1
+---------------------------------------
+wevtutil qe "Microsoft-Windows-Sysmon/Operational" /q:"*[System[(EventID=1)]]" /c:5 /rd:true /f:text
+
+
+9. SYSMON PROCESS CREATION — POWERSHELL FILTER
+----------------------------------------------
+wevtutil qe "Microsoft-Windows-Sysmon/Operational" /q:"*[System[(EventID=1)]]" /c:50 /rd:true /f:text | findstr /i /C:"powershell.exe"
+
+
+10. SYSMON NETWORK CONNECTION — EVENT ID 3
+------------------------------------------
+wevtutil qe "Microsoft-Windows-Sysmon/Operational" /q:"*[System[(EventID=3)]]" /c:20 /rd:true /f:text
+
+
+11. WINDOWS NETWORK CONFIGURATION
+---------------------------------
+ipconfig
+
+
+12. WINDOWS HOSTNAME BASELINE
+-----------------------------
+hostname
+
+
+13. WINDOWS USER BASELINE
+-------------------------
+whoami
+
+
+14. WINDOWS SYSTEM INFORMATION BASELINE
+---------------------------------------
+systeminfo
